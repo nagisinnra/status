@@ -1,0 +1,51 @@
+{
+  "overall": {
+    "status": "operational",
+    "label": "All Systems Operational"
+  },
+  "infrastructure": [
+    {
+      "name": "Main Website",
+      "status": "operational"
+    },
+    {
+      "name": "Downloads",
+      "status": "operational"
+    },
+    {
+      "name": "Repository",
+      "status": "operational"
+    },
+    {
+      "name": "Documentation",
+      "status": "operational"
+    }
+  ],
+  "release": {
+    "name": "NagisinnraLinux Mist Edition",
+    "version": "1.0.8",
+    "channel": "Stable"
+  },
+  "developer": {
+    "status": "coding"
+  },
+  "development": [
+    {
+      "title": "Mist Edition refinement",
+      "description": "Polishing the current release experience.",
+      "state": "In progress"
+    },
+    {
+      "title": "Infrastructure improvements",
+      "description": "Improving reliability across project services.",
+      "state": "In progress"
+    },
+    {
+      "title": "Documentation updates",
+      "description": "Keeping installation and project documentation current.",
+      "state": "Planned"
+    }
+  ],
+  "availability": "99.98%",
+  "incident": "No incidents reported during this period."
+}

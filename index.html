@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f7f8f6">
+<meta name="description" content="NagisinnraLinux Status — monitor availability, releases, development and infrastructure health.">
+<title>NagisinnraLinux Status</title>
+<style>
+:root{
+  --bg:#f7f8f6; --surface:rgba(255,255,255,.78); --surface-solid:#fff;
+  --text:#171a17; --muted:#737873; --line:#e6e9e4; --green:#788c78;
+  --green-dark:#607460; --green-soft:#edf2ed; --shadow:0 18px 55px rgba(27,35,27,.07);
+  --radius:24px; --max:1120px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:
+ radial-gradient(circle at 80% 5%,rgba(120,140,120,.10),transparent 28rem),
+ linear-gradient(180deg,#fafbf9 0%,var(--bg) 55%,#f5f6f4 100%);
+ color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text",
+ "Inter","Segoe UI",sans-serif;letter-spacing:-.015em}
+a{color:inherit;text-decoration:none}
+.nav-wrap{position:sticky;top:18px;z-index:10;padding:0 20px}
+nav{max-width:var(--max);height:62px;margin:auto;display:flex;align-items:center;justify-content:space-between;
+ padding:0 18px;border:1px solid rgba(255,255,255,.9);background:rgba(255,255,255,.72);
+ backdrop-filter:blur(22px) saturate(140%);-webkit-backdrop-filter:blur(22px) saturate(140%);
+ border-radius:18px;box-shadow:0 8px 30px rgba(28,35,28,.055)}
+.brand{font-size:15px;font-weight:650;letter-spacing:-.02em}.brand-dot{display:inline-block;width:8px;height:8px;
+ border-radius:50%;background:var(--green);margin-right:8px;box-shadow:0 0 0 4px var(--green-soft)}
+.nav-right{font-size:13px;color:var(--muted);font-weight:550}
+main{max-width:var(--max);margin:auto;padding:112px 20px 80px}
+.hero{text-align:center;max-width:840px;margin:0 auto 86px}
+.badge{display:inline-flex;align-items:center;gap:9px;padding:8px 12px;border:1px solid #dce5dc;
+ background:rgba(238,244,238,.78);border-radius:999px;color:#5d705e;font-size:12px;font-weight:650;
+ box-shadow:0 5px 18px rgba(66,88,66,.05)}
+.dot{width:7px;height:7px;border-radius:50%;background:#788c78;box-shadow:0 0 0 4px #e2ebe2}
+h1{font-size:clamp(52px,8vw,88px);line-height:.96;letter-spacing:-.065em;font-weight:680;margin:28px 0 28px}
+.hero p{max-width:660px;margin:auto;color:var(--muted);font-size:18px;line-height:1.65;letter-spacing:-.015em}
+.grid{display:grid;grid-template-columns:1.35fr .85fr;gap:18px;margin-bottom:18px}
+.card{background:var(--surface);border:1px solid rgba(225,228,223,.92);border-radius:var(--radius);
+ box-shadow:var(--shadow);padding:28px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.card h2{font-size:18px;margin:0 0 5px;font-weight:650;letter-spacing:-.025em}
+.card-sub{font-size:13px;color:var(--muted);margin-bottom:22px}
+.services{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.service{display:flex;align-items:center;justify-content:space-between;padding:15px 16px;border:1px solid var(--line);
+ background:rgba(255,255,255,.65);border-radius:15px;transition:.2s ease}
+.service:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(30,40,30,.06)}
+.service-name{font-size:14px;font-weight:570}.state{font-size:11px;font-weight:650;color:#5e735f;
+ display:flex;align-items:center;gap:6px}.state-dot{width:6px;height:6px;border-radius:50%;background:var(--green)}
+.state.maintenance .state-dot{background:#b6a06b}.state.degraded .state-dot{background:#c18a54}
+.state.offline .state-dot{background:#a55e5e}.state.maintenance,.state.degraded,.state.offline{color:#776b58}
+.release-value{font-size:25px;font-weight:650;letter-spacing:-.04em;margin:22px 0}
+.meta{display:grid;grid-template-columns:1fr 1fr;gap:12px}.meta-box{padding:14px 15px;border-radius:15px;background:#f7f8f6;border:1px solid var(--line)}
+.meta-label{font-size:11px;color:var(--muted);margin-bottom:5px}.meta-value{font-size:14px;font-weight:620}
+.dev-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.dev-option{padding:13px 7px;text-align:center;border:1px solid var(--line);border-radius:15px;background:#fff;
+ font-size:12px;color:#656a65;cursor:pointer;transition:.2s ease}
+.dev-option:hover{transform:translateY(-1px)}.dev-option.active{background:var(--green-soft);border-color:#cfdacf;color:#536554;font-weight:650}
+.dev-emoji{display:block;font-size:18px;margin-bottom:6px}
+.task-list{display:grid;gap:10px}.task{display:flex;justify-content:space-between;gap:20px;padding:16px 17px;
+ border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.65)}
+.task-title{font-size:14px;font-weight:620}.task-desc{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.45}.task-state{white-space:nowrap;
+ font-size:11px;color:#657066;padding-top:2px}
+.bottom{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
+.metric{display:flex;align-items:end;justify-content:space-between}.metric-number{font-size:52px;line-height:1;font-weight:650;letter-spacing:-.06em}.metric-label{font-size:12px;color:var(--muted);margin-bottom:7px}
+.incident{min-height:150px;display:flex;flex-direction:column;justify-content:space-between}.incident p{font-size:15px;color:#555b55;line-height:1.55;margin:15px 0 0}
+footer{max-width:var(--max);margin:40px auto 0;padding:0 20px 42px;display:flex;justify-content:space-between;gap:20px;
+ color:#858a85;font-size:12px}.footer-brand{color:#5f655f;font-weight:650}.footer-copy{text-align:right}
+.fade{animation:fade .65s ease both}@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media(max-width:800px){main{padding-top:85px}.grid,.bottom{grid-template-columns:1fr}.services{grid-template-columns:1fr}.dev-grid{grid-template-columns:repeat(2,1fr)}
+h1{font-size:54px}.hero{margin-bottom:58px}.card{padding:22px}}
+@media(max-width:480px){h1{font-size:45px}.hero p{font-size:16px}.nav-right{display:none}.nav-wrap{top:10px}.dev-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="nav-wrap">
+<nav><a class="brand" href="#"><span class="brand-dot"></span>NagisinnraLinux Status</a><span class="nav-right">System overview</span></nav>
+</div>
+
+<main>
+<section class="hero fade">
+  <div class="badge"><span class="dot"></span><span id="overallLabel">All Systems Operational</span></div>
+  <h1>Reliable by nature.<br>Operational by design.</h1>
+  <p>Monitor the health, availability, and current development status of the NagisinnraLinux ecosystem from a single platform.</p>
+</section>
+
+<section class="grid fade">
+  <article class="card">
+    <h2>Infrastructure</h2><div class="card-sub">Live status of core NagisinnraLinux services.</div>
+    <div class="services" id="services"></div>
+  </article>
+  <article class="card">
+    <h2>Current Release</h2><div class="card-sub">The latest publicly maintained release.</div>
+    <div class="release-value" id="releaseName">NagisinnraLinux Mist Edition</div>
+    <div class="meta"><div class="meta-box"><div class="meta-label">Version</div><div class="meta-value" id="version">1.0.8</div></div>
+    <div class="meta-box"><div class="meta-label">Release Channel</div><div class="meta-value" id="channel">Stable</div></div></div>
+  </article>
+</section>
+
+<section class="card fade" style="margin-bottom:18px">
+  <h2>Developer Status</h2><div class="card-sub">A simple human status for the project maintainer.</div>
+  <div class="dev-grid" id="developer"></div>
+</section>
+
+<section class="card fade">
+  <h2>Current Development</h2><div class="card-sub">Work currently moving the ecosystem forward.</div>
+  <div class="task-list" id="tasks"></div>
+</section>
+
+<section class="bottom fade">
+  <article class="card">
+    <h2>Service Availability</h2><div class="card-sub">Rolling availability across monitored services.</div>
+    <div class="metric"><div class="metric-number" id="availability">99.98%</div><div class="metric-label">Current period</div></div>
+  </article>
+  <article class="card incident">
+    <div><h2>Incident History</h2><div class="card-sub">Recent service reliability events.</div>
+    <p id="incident">No incidents reported during this period.</p></div>
+  </article>
+</section>
+</main>
+
+<footer>
+  <div><div class="footer-brand">NagisinnraLinux Monitoring Platform</div><div style="margin-top:7px">Built for transparency.</div></div>
+  <div class="footer-copy">Maintained with passion.</div>
+</footer>
+
+<script>
+const fallback = {
+  overall:{status:"operational",label:"All Systems Operational"},
+  infrastructure:[
+    {name:"Main Website",status:"operational"},{name:"Downloads",status:"operational"},
+    {name:"Repository",status:"operational"},{name:"Documentation",status:"operational"}
+  ],
+  release:{name:"NagisinnraLinux Mist Edition",version:"1.0.8",channel:"Stable"},
+  developer:{status:"coding"},
+  development:[
+    {title:"Mist Edition refinement",description:"Polishing the current release experience.",state:"In progress"},
+    {title:"Infrastructure improvements",description:"Improving reliability across project services.",state:"In progress"},
+    {title:"Documentation updates",description:"Keeping installation and project documentation current.",state:"Planned"}
+  ],
+  availability:"99.98%",incident:"No incidents reported during this period."
+};
+
+const developerStates = [
+  ["alive","☕","Alive"],["coding","💻","Coding"],["studying","📚","Studying"],
+  ["sleeping","😴","Sleeping"],["fixing","🔥","Fixing Production"]
+];
+const statusLabels={operational:"Operational",maintenance:"Maintenance",degraded:"Degraded Performance",offline:"Offline"};
+
+function render(data){
+  document.getElementById("overallLabel").textContent=data.overall.label;
+  document.getElementById("services").innerHTML=data.infrastructure.map(s=>`
+    <div class="service"><span class="service-name">${s.name}</span>
+    <span class="state ${s.status}"><i class="state-dot"></i>${statusLabels[s.status]||s.status}</span></div>`).join("");
+  document.getElementById("releaseName").textContent=data.release.name;
+  document.getElementById("version").textContent=data.release.version;
+  document.getElementById("channel").textContent=data.release.channel;
+  document.getElementById("developer").innerHTML=developerStates.map(d=>`
+    <div class="dev-option ${d[0]===data.developer.status?"active":""}" data-status="${d[0]}">
+      <span class="dev-emoji">${d[1]}</span>${d[2]}</div>`).join("");
+  document.getElementById("tasks").innerHTML=data.development.map(t=>`
+    <div class="task"><div><div class="task-title">${t.title}</div><div class="task-desc">${t.description}</div></div>
+    <div class="task-state">${t.state}</div></div>`).join("");
+  document.getElementById("availability").textContent=data.availability;
+  document.getElementById("incident").textContent=data.incident;
+  document.querySelectorAll(".dev-option").forEach(el=>el.addEventListener("click",()=>{
+    document.querySelectorAll(".dev-option").forEach(x=>x.classList.remove("active")); el.classList.add("active");
+    // This changes the display locally. Edit status.json to make the change persistent.
+  }));
+}
+fetch("status.json",{cache:"no-store"}).then(r=>r.ok?r.json():Promise.reject()).then(render).catch(()=>render(fallback));
+</script>
+</body>
+</html>
